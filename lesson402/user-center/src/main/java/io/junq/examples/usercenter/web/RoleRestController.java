@@ -25,7 +25,7 @@ import io.junq.examples.usercenter.util.UserCenterMapping;
 
 @Controller
 @RequestMapping(value = UserCenterMapping.ROLES)
-@CrossOrigin(origins = "*")
+@CrossOrigin("*")
 public class RoleRestController extends AbstractController<Role> implements ISortingController<Role> {
 
 	@Autowired
