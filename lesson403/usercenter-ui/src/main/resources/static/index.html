@@ -16,6 +16,12 @@
 </head>
 
 <body ng-app="welcome" ng-cloak class="ng-cloak">
+	<div ng-controller="navigation" class="container">
+		<ul class="nav nav-pills" role="tablist">
+			<li ng-class="{active:tab('home')}"><a href="#/">首页</a></li>
+			<li ><a href="#/login">登录</a></li>
+		</ul>
+	</div>
 	<div ng-view class="container"></div>
 </body>
 </html>
