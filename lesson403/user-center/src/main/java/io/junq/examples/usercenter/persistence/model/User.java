@@ -61,10 +61,11 @@ public class User implements INameableEntity, INameableDto {
 		locked = false;
 	}
 
-	public User(final String nameToSet, final String passwordToSet, final Set<Role> rolesToSet) {
+	public User(final String nameToSet, final String emailToSet, final String passwordToSet, final Set<Role> rolesToSet) {
 		super();
 
 		name = nameToSet;
+		email = emailToSet;
 		password = passwordToSet;
 		roles = rolesToSet;
 	}

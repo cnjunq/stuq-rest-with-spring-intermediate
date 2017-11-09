@@ -16,13 +16,13 @@ angular.module('welcome', [ 'ngResource', 'ngRoute' ]).config(function($routePro
 	};
 
 	var authenticate = function(credentials, callback) {
-		$scope.data = {grant_type:"password", username: credentials.username, password: credentials.password, client_id: "um"};
+		$scope.data = {grant_type:"password", username: credentials.username, password: credentials.password, client_id: "uc"};
 
 		var req = {
 				method: 'POST',
 				url: "http://localhost:8082/oauth/token",
 				headers: {
-					"Authorization": "Basic " + btoa("um" + ":" + "VXB0YWtlLUlyb24h"),
+					"Authorization": "Basic " + btoa("uc" + ":" + "VXB0YWtlLUlyb24h"),
 					"Content-type": "application/x-www-form-urlencoded; charset=utf-8"
 						},
 				data: $httpParamSerializer($scope.data)
