@@ -43,26 +43,24 @@ angular.module('welcome', [ 'ngResource', 'ngRoute' ]).config(function($routePro
 			  delete $window.sessionStorage.accessToken;
 			  callback && callback(false);
 		  	});
-		 }
+		}
 
-		    // authenticate();
-
-		    $scope.credentials = {};
-		    $scope.login = function() {
-		        authenticate($scope.credentials, function(authenticated) {
-		            if (authenticated) {
-		                console.log("登录成功")
-		                $location.path("/");
-		                $scope.error = false;
-		                $rootScope.authenticated = true;
-		            } else {
-		                console.log("登录失败")
-		                $location.path("/login");
-		                $scope.error = true;
-		                $rootScope.authenticated = false;
-		            }
-		        })
-		    };
+	$scope.credentials = {};
+	$scope.login = function() {
+		authenticate($scope.credentials, function(authenticated) {
+			if (authenticated) {
+				console.log("登录成功")
+				$location.path("/");
+				$scope.error = false;
+				$rootScope.authenticated = true;
+			} else {
+				console.log("登录失败")
+				$location.path("/login");
+				$scope.error = true;
+				$rootScope.authenticated = false;
+			}
+		})
+	};
 
 }).controller('home', function($scope, $http, $window) {
     var headers = {
