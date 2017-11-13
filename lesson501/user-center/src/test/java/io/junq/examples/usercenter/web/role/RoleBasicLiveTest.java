@@ -47,38 +47,38 @@ public class RoleBasicLiveTest {
         Assert.assertThat(response.getStatusCode(), Matchers.equalTo(200));
     }
 
-    @Test
-    public void whenAllRolesAreRetrieved_thenAtLeastOneRoleExists() {
-        final Response response = RestAssured.given().auth().preemptive().basic(UserCenter.ADMIN_EMAIL, UserCenter.ADMIN_PASS).accept(ContentType.JSON).get(URI);
-        final List<Role> roles = response.as(List.class);
-
-        Assert.assertThat(roles, not(Matchers.<Role> empty()));
-    }
-
-    @Test
-    public void whenCreatingANewRole_thenRoleCanBeRetrieved() {
-        final Role newRole = new Role(randomAlphabetic(6), Sets.newHashSet());
-        final RequestSpecification writeAuth = RestAssured.given().auth().preemptive().basic(UserCenter.ADMIN_EMAIL, UserCenter.ADMIN_PASS);
-        final Response createResponse = writeAuth.contentType(ContentType.JSON).body(newRole).post(URI);
-
-        final String locationHeader = createResponse.getHeader("Location");
-        final RequestSpecification readAuth = RestAssured.given().auth().preemptive().basic(UserCenter.ADMIN_EMAIL, UserCenter.ADMIN_PASS);
-        final Role retrievedRole = readAuth.accept(ContentType.JSON).get(locationHeader).as(Role.class);
-
-        assertThat(newRole, equalTo(retrievedRole));
-    }
-
-    // == working unlike expected in video
-    @Test
-    public void whenCreatingANewRole_thenRoleCanBeRetrieved_2() {
-        final Role newRole = new Role(randomAlphabetic(6), Sets.newHashSet());
-        final RequestSpecification auth = RestAssured.given().auth().preemptive().basic(UserCenter.ADMIN_EMAIL, UserCenter.ADMIN_PASS);
-        final Response createResponse = auth.contentType(ContentType.JSON).body(newRole).post(URI);
-
-        final String locationHeader = createResponse.getHeader("Location");
-        final Role retrievedRole = auth.accept(ContentType.JSON).get(locationHeader).as(Role.class);
-
-        assertThat(newRole, equalTo(retrievedRole));
-    }
+//    @Test
+//    public void whenAllRolesAreRetrieved_thenAtLeastOneRoleExists() {
+//        final Response response = RestAssured.given().auth().preemptive().basic(UserCenter.ADMIN_EMAIL, UserCenter.ADMIN_PASS).accept(ContentType.JSON).get(URI);
+//        final List<Role> roles = response.as(List.class);
+//
+//        Assert.assertThat(roles, not(Matchers.<Role> empty()));
+//    }
+//
+//    @Test
+//    public void whenCreatingANewRole_thenRoleCanBeRetrieved() {
+//        final Role newRole = new Role(randomAlphabetic(6), Sets.newHashSet());
+//        final RequestSpecification writeAuth = RestAssured.given().auth().preemptive().basic(UserCenter.ADMIN_EMAIL, UserCenter.ADMIN_PASS);
+//        final Response createResponse = writeAuth.contentType(ContentType.JSON).body(newRole).post(URI);
+//
+//        final String locationHeader = createResponse.getHeader("Location");
+//        final RequestSpecification readAuth = RestAssured.given().auth().preemptive().basic(UserCenter.ADMIN_EMAIL, UserCenter.ADMIN_PASS);
+//        final Role retrievedRole = readAuth.accept(ContentType.JSON).get(locationHeader).as(Role.class);
+//
+//        assertThat(newRole, equalTo(retrievedRole));
+//    }
+//
+//    // == working unlike expected in video
+//    @Test
+//    public void whenCreatingANewRole_thenRoleCanBeRetrieved_2() {
+//        final Role newRole = new Role(randomAlphabetic(6), Sets.newHashSet());
+//        final RequestSpecification auth = RestAssured.given().auth().preemptive().basic(UserCenter.ADMIN_EMAIL, UserCenter.ADMIN_PASS);
+//        final Response createResponse = auth.contentType(ContentType.JSON).body(newRole).post(URI);
+//
+//        final String locationHeader = createResponse.getHeader("Location");
+//        final Role retrievedRole = auth.accept(ContentType.JSON).get(locationHeader).as(Role.class);
+//
+//        assertThat(newRole, equalTo(retrievedRole));
+//    }
 	
 }
