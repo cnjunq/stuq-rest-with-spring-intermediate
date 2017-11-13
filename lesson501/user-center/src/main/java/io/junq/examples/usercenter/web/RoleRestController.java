@@ -3,12 +3,13 @@ package io.junq.examples.usercenter.web;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import io.junq.examples.common.util.QueryConstants;
 import io.junq.examples.common.web.controller.AbstractController;
@@ -87,8 +89,8 @@ public class RoleRestController extends AbstractController<Role> implements ISor
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @Secured(Privileges.CAN_ROLE_WRITE)
-    public void create(@RequestBody final Role resource) {
-        createInternal(resource);
+    public void create(@RequestBody @Valid final Role resource, final UriComponentsBuilder uriBuilder, final HttpServletResponse response) {
+        createInternal(resource, uriBuilder, response);
     }
 
     // 更新

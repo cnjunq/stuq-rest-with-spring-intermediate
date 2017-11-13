@@ -68,7 +68,7 @@ angular.module('welcome', [ 'ngResource', 'ngRoute' ]).config(function($routePro
         authorization : "Bearer " + $window.sessionStorage.accessToken
     };
     
-    $http.get("http://localhost:8082/api/roles/7", {
+    $http.get("http://localhost:8082/api/roles/16", {
         headers : headers
     }).success(function(data) {
         $scope.role = data;

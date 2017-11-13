@@ -1,9 +1,13 @@
 package io.junq.examples.common.web.controller;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import io.junq.examples.common.persistence.model.IEntity;
 import io.junq.examples.common.web.RestPreconditions;
+import io.junq.examples.common.web.events.AfterResourceCreatedEvent;
 
 public abstract class AbstractController <T extends IEntity> extends AbstractReadOnlyController<T> {
 	
@@ -14,10 +18,12 @@ public abstract class AbstractController <T extends IEntity> extends AbstractRea
 
 	// 新建并保存
 
-    protected final void createInternal(final T resource) {
+    protected final void createInternal(final T resource, final UriComponentsBuilder uriBuilder, final HttpServletResponse response) {
         RestPreconditions.checkRequestElementNotNull(resource);
         RestPreconditions.checkRequestState(resource.getId() == null);
-        getService().create(resource);
+        final T existingResource = getService().create(resource);
+
+        eventPublisher.publishEvent(new AfterResourceCreatedEvent<T>(clazz, uriBuilder, response, existingResource.getId().toString()));
     }
 
 	// 更新操作
