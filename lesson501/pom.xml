@@ -77,6 +77,9 @@
 
 		<!-- 内部依赖项目 -->
 		<rest-common.version>1.0.0-SNAPSHOT</rest-common.version>
+		<rest-client.version>1.0.0-SNAPSHOT</rest-client.version>
+		<rest-test.version>1.0.0-SNAPSHOT</rest-test.version>
+		<usercenter-client.version>1.0.0-SNAPSHOT</usercenter-client.version>
 	</properties>
 
 	<dependencyManagement>
@@ -85,6 +88,29 @@
 				<groupId>io.junq.examples</groupId>
 				<artifactId>rest-common</artifactId>
 				<version>${rest-common.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.junq.examples</groupId>
+				<artifactId>rest-client</artifactId>
+				<version>${rest-client.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.junq.examples</groupId>
+				<artifactId>rest-client</artifactId>
+				<version>${rest-client.version}</version>
+				<scope>test</scope>
+            	<classifier>tests</classifier>
+			</dependency>
+			<dependency>
+				<groupId>io.junq.examples</groupId>
+				<artifactId>rest-test</artifactId>
+				<version>${rest-test.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>io.junq.examples</groupId>
+				<artifactId>usercenter-client</artifactId>
+				<version>${usercenter-client.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.guava</groupId>
