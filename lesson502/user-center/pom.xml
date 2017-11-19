@@ -42,6 +42,7 @@
 		<dependency>
 			<groupId>io.junq.examples</groupId>
 			<artifactId>usercenter-client</artifactId>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -84,7 +85,7 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-jwt</artifactId>
 		</dependency>
-
+		
 	</dependencies>
 
 	<build>

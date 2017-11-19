@@ -111,6 +111,7 @@
 				<groupId>io.junq.examples</groupId>
 				<artifactId>usercenter-client</artifactId>
 				<version>${usercenter-client.version}</version>
+				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.google.guava</groupId>

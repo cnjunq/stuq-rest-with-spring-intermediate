@@ -39,7 +39,7 @@ public class RoleSimpleLiveTest {
     @Autowired
     private RoleSimpleApiClient apiClient;
     
- // find - one
+    // 查找单条记录
 
     @Test
     public final void whenNonExistingResourceIsRetrieved_then404IsReceived() {
@@ -79,7 +79,7 @@ public class RoleSimpleLiveTest {
         assertEquals(createdResource, newResource);
     }
 
-    // UTIL
+    // 工具方法
 
     private final String getUri() {
         return getApi().getUri() + WebConstants.PATH_SEP;

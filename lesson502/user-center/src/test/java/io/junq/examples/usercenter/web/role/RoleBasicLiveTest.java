@@ -14,6 +14,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -21,6 +22,7 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import com.google.common.collect.Sets;
 
+import io.junq.examples.usercenter.client.template.RoleSimpleApiClient;
 import io.junq.examples.usercenter.persistence.model.Role;
 import io.junq.examples.usercenter.spring.RestTestConfig;
 import io.junq.examples.usercenter.spring.UserCenterClientConfig;
@@ -49,6 +51,7 @@ public class RoleBasicLiveTest {
 	
 	@BeforeClass
 	public static void setup() {
+		
 		contentType = ContentType.JSON;
 		
 		// 生成access token

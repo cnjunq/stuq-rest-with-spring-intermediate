@@ -20,64 +20,71 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
-@Component
 @Profile(Profiles.CLIENT)
+@Component
 public final class RoleSimpleApiClient {
 
     @Autowired
 	protected UserCenterPaths paths;
-	
+    
 	// API
     
-    // find - one
-
+    // 查找单条记录
+    
     public final Role findOne(final long id) {
-        final Response findOneResponse = findOneAsResponse(id);
-        Preconditions.checkState(findOneResponse.getStatusCode() == 200, "Find One operation didn't result in a 200 OK");
-        return findOneResponse.as(Role.class);
+    	final Response response = findOneAsResponse(id);
+    	Preconditions.checkState(response.getStatusCode() == 200, "Expecting status code is 200 OK, but actual response is not.");
+    	return response.as(Role.class);
     }
     
-    public final List<Role> findAll() {
-        return findAllAsResponse().as(List.class);
-    }
-    
-    public Response findAllAsResponse() {
-        return read(getUri());
-    }
-
     public final Response findOneAsResponse(final long id) {
-        return read(getUri() + "/" + id);
+    	return read(getUri() + "/" + id);
+    }
+    
+    // 查找列表
+    
+    @SuppressWarnings("unchecked")
+	public final List<Role> findAll() {
+    	final Response response = findAllAsResponse();
+    	Preconditions.checkState(response.getStatusCode() == 200, "Expecting status code is 200 OK, but actual response is not.");
+    	return response.as(List.class);
+    }
+    
+    public final Response findAllAsResponse() {
+    	return read(getUri());
+    }
+    
+    // 创建角色
+    
+    public final Role create(final Role role) {
+    	final Response response = createAsResponse(role);
+    	Preconditions.checkState(response.getStatusCode() == 201, "Expecting status code is 201 OK, but actual response is not.");
+    	final String location = response.getHeader(HttpHeaders.LOCATION);
+    	return read(location).as(Role.class);
     }
     
     public final Response createAsResponse(final Role role) {
-        return givenAuthenticated().contentType(ContentType.JSON).body(role).post(getUri());
+    	return givenAuthenticated().contentType(ContentType.JSON).body(role).post(getUri());
     }
-
-    public final Role create(final Role role) {
-        final Response response = createAsResponse(role);
-        final String locationOfNewResource = response.getHeader(HttpHeaders.LOCATION);
-        return read(locationOfNewResource).as(Role.class);
-    }
-
-    public final Response updateAsResponse(final Role role) {
-        return givenAuthenticated().contentType(ContentType.JSON).body(role).put(getUri() + "/" + role.getId());
-    }
-
+    
+    // 更新角色
+    
     public final Role update(final Role role) {
-        updateAsResponse(role);
-        return read(getUri() + "/" + role.getId()).as(Role.class);
+    	Response response = updateAsResponse(role);
+    	Preconditions.checkState(response.getStatusCode() == 200, "Expecting status code is 200 OK, but actual response is not.");
+    	return read(getUri() + "/" + role.getId()).as(Role.class);
     }
-
-    public final Response deleteAsResponse(final long id) {
-        return givenAuthenticated().delete(getUri() + "/" + id);
+    
+    public final Response updateAsResponse(final Role role) {
+    	return givenAuthenticated().contentType(ContentType.JSON).body(role).put(getUri() + "/" + role.getId());
     }
     
     // 工具方法
-    
-    public final Response read(final String uri) {
-        return givenAuthenticated().accept(ContentType.JSON).get(uri);
-    }
 
+    public final Response read(final String uri) {
+    	return givenAuthenticated().accept(ContentType.JSON).get(uri);
+    }
+    
     public final String getUri() {
         return paths.getRoleUri();
     }
