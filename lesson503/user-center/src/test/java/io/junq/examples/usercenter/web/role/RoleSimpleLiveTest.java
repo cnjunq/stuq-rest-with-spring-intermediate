@@ -145,6 +145,10 @@ public class RoleSimpleLiveTest {
         assertThat(response.getStatusCode(), is(409));
     }
 
+    // 更新操作，PUT
+    
+    // 删除操作，DELETE
+    
     // 工具方法
 
     private final String getUri() {
