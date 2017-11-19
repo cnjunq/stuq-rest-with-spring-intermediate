@@ -39,24 +39,30 @@ public class RoleSimpleLiveTest {
     @Autowired
     private RoleSimpleApiClient apiClient;
     
-    // 查找单条记录
+    // 查找单条记录，指定id（数字型）的角色对象不存在
 
     @Test
     public final void whenNonExistingResourceIsRetrieved_then404IsReceived() {
         final Response response = getApi().findOneAsResponse(IDUtil.randomPositiveLong());
+        
+        // 状态码将是500，抛出资源不存在的异常IJResourceNotFoundException
 
-        assertThat(response.getStatusCode(), is(404));
+        assertThat(response.getStatusCode(), is(500));
     }
+    
+    // 查找单条记录，指定id（非数字型）的角色对象，应返回400
 
     @Test
     public final void whenResourceIsRetrievedByNonNumericId_then400IsReceived() {
         // When
-        final Response res = getApi().read(getUri() + WebConstants.PATH_SEP + randomAlphabetic(6));
+        final Response res = getApi().read(getUri() + randomAlphabetic(6));
 
         // Then
         assertThat(res.getStatusCode(), is(400));
     }
 
+    // 创建角色对象，并获取创建完成的角色对象，仅判断状态码
+    
     @Test
     public final void givenResourceForIdExists_whenResourceOfThatIdIsRetrieved_then200IsRetrieved() {
         // Given
@@ -68,6 +74,8 @@ public class RoleSimpleLiveTest {
         // Then
         assertThat(response.getStatusCode(), is(200));
     }
+    
+    // 创建角色对象，并获取创建完成的角色对象，判断角色对象是否一致
 
     @Test
     public final void whenResourceIsCreated_thenResourceIsCorrectlyRetrieved() {

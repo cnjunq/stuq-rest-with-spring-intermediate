@@ -31,7 +31,7 @@ public class UserCenterPaths {
     }
 
     public final String getRootUri() {
-        return getContext() + "/api/";
+        return getContext() + "api/";
     }
 
     public final String getUserUri() {
