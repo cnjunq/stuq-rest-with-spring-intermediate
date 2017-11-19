@@ -8,6 +8,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 
 import org.junit.Test;
@@ -47,7 +48,7 @@ public class RoleSimpleLiveTest {
         
         // 状态码将是500，抛出资源不存在的异常IJResourceNotFoundException
 
-        assertThat(response.getStatusCode(), is(500));
+        assertThat(response.getStatusCode(), is(404));
     }
     
     // 查找单条记录，指定id（非数字型）的角色对象，应返回400
@@ -61,30 +62,87 @@ public class RoleSimpleLiveTest {
         assertThat(res.getStatusCode(), is(400));
     }
 
-    // 创建角色对象，并获取创建完成的角色对象，仅判断状态码
+    // 查找所有角色列表
     
     @Test
-    public final void givenResourceForIdExists_whenResourceOfThatIdIsRetrieved_then200IsRetrieved() {
-        // Given
-        final String uriForResourseCreation = getApi().createAsResponse(createNewResource()).getHeader(HttpHeaders.LOCATION);
-
-        // when
-        final Response response = getApi().read(uriForResourseCreation);
+    public final void whenAllResourcesAreRetrieved_then200IsReceived() {
+        // When
+        final Response response = getApi().read(getUri());
 
         // Then
         assertThat(response.getStatusCode(), is(200));
     }
     
-    // 创建角色对象，并获取创建完成的角色对象，判断角色对象是否一致
+    // 创建角色资源
 
+    // 创建成功，并返回201
     @Test
-    public final void whenResourceIsCreated_thenResourceIsCorrectlyRetrieved() {
-        // Given, When
-        final Role newResource = createNewResource();
-        final Role createdResource = getApi().create(newResource);
+    public final void whenResourceIsCreated_then201IsReceived() {
+        // When
+        final Response response = getApi().createAsResponse(createNewResource());
 
         // Then
-        assertEquals(createdResource, newResource);
+        assertThat(response.getStatusCode(), is(201));
+    }
+    
+    // 创建成功（名字有空格），并返回201
+    @Test
+    public final void givenResourceHasNameWithSpace_whenResourceIsCreated_then201IsReceived() {
+        final Role newResource = createNewResource();
+        newResource.setName(randomAlphabetic(4) + " " + randomAlphabetic(4));
+
+        // When
+        final Response createAsResponse = getApi().createAsResponse(newResource);
+
+        // Then
+        assertThat(createAsResponse.getStatusCode(), is(201));
+    }
+    
+    // 创建失败（不支持的内容格式），返回415
+    @Test
+    public final void whenResourceWithUnsupportedMediaTypeIsCreated_then415IsReceived() {
+        // When
+        final Response response = getApi().givenAuthenticated().contentType("unknown").post(getUri());
+
+        // Then
+        assertThat(response.getStatusCode(), is(415));
+    }
+    
+    // 创建失败（已存在id），返回409
+    @Test
+    public final void whenResourceIsCreatedWithNonNullId_then409IsReceived() {
+        final Role resourceWithId = createNewResource();
+        resourceWithId.setId(5l);
+
+        // When
+        final Response response = getApi().createAsResponse(resourceWithId);
+
+        // Then
+        assertThat(response.getStatusCode(), is(409));
+    }
+    
+    // 创建成功，返回location
+    @Test
+    public final void whenResourceIsCreated_thenResponseContainsTheLocationHeader() {
+        // When
+        final Response response = getApi().createAsResponse(createNewResource());
+
+        // Then
+        assertNotNull(response.getHeader(HttpHeaders.LOCATION));
+    }
+
+    // 创建失败（重复创建），返回409
+    @Test
+    public final void givenResourceExsits_whenResourceWithSameAttributeIsCreated_then409IsReceived() {
+        // Given
+        final Role newEntity = createNewResource();
+        getApi().createAsResponse(newEntity);
+
+        // when
+        final Response response = getApi().createAsResponse(newEntity);
+
+        // Then
+        assertThat(response.getStatusCode(), is(409));
     }
 
     // 工具方法

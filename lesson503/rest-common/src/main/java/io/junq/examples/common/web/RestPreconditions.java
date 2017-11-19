@@ -117,5 +117,23 @@ public final class RestPreconditions {
             throw new IJConflictException(message);
         }
     }
+    
+    /**
+     * 检查资源是否找到
+     */
+    public static <T> T checkFound(final T resource) {
+        return checkFound(resource, null);
+    }
+
+    /**
+     * 检查资源是否找到
+     */
+    public static <T> T checkFound(final T resource, final String message) {
+        if (resource == null) {
+            throw new IJResourceNotFoundException(message);
+        }
+
+        return resource;
+    }
 
 }
