@@ -105,7 +105,7 @@ public class UserRestController extends AbstractController<User> implements ISor
     // 删除
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @Secured("CAN_DELETE_USER")
     public void delete(@PathVariable("id") final Long id) {
         deleteByIdInternal(id);

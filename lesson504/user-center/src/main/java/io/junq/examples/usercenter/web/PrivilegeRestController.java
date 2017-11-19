@@ -128,7 +128,7 @@ public class PrivilegeRestController extends AbstractController<Privilege> imple
     		value = "/{id}", 
     		method = RequestMethod.DELETE
     		)
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @Secured(Privileges.CAN_ROLE_WRITE)
     public void delete(@PathVariable("id") final Long id) {
         deleteByIdInternal(id);
