@@ -1,5 +1,7 @@
 package io.junq.examples.usercenter.persistence.setup;
 
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
+
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -113,7 +115,7 @@ public class SecuritySetup implements ApplicationListener<ContextRefreshedEvent>
     final void createRoleIfNotExisting(final String name, final Set<Privilege> privileges) {
         final Role entityByName = roleService.findByName(name);
         if (entityByName == null) {
-            final Role entity = new Role(name);
+            final Role entity = new Role(name, randomAlphabetic(8));
             entity.setPrivileges(privileges);
             roleService.create(entity);
         }

@@ -2,12 +2,13 @@ package io.junq.examples.usercenter.web.role;
 
 import static io.junq.examples.common.spring.util.Profiles.CLIENT;
 import static io.junq.examples.common.spring.util.Profiles.TEST;
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertNotNull;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,12 +19,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-import com.google.common.collect.Sets;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import io.junq.examples.usercenter.client.template.GenericSimpleApiClient;
 import io.junq.examples.usercenter.client.template.RoleSimpleApiClient;
-import io.junq.examples.usercenter.persistence.model.Privilege;
-import io.junq.examples.usercenter.persistence.model.Role;
 import io.junq.examples.usercenter.spring.RestTestConfig;
 import io.junq.examples.usercenter.spring.UserCenterClientConfig;
 import io.junq.examples.usercenter.spring.UserCenterLiveTestConfiguration;
@@ -47,10 +49,33 @@ public class RoleContractLiveTest {
         assertNotNull(response.getHeader(HttpHeaders.LOCATION));
     }
     
-    private final Role createNewResource() throws IOException {
-        return new Role(randomAlphabetic(8), Sets.<Privilege> newHashSet());
+//    private final Role createNewResource() {
+//        return new Role(randomAlphabetic(8), Sets.<Privilege> newHashSet());
+//    }
+    
+//    private final String createNewResource() {
+//    	final Role role = new Role(randomAlphabetic(8), Sets.<Privilege> newHashSet());
+//    	return getApi().getMarshaller().encode(role);
+//    }
+    
+//    private final String createNewResource() {
+//        final String roleData = "{\"id\":null,\"name\":\"" + randomAlphabetic(8) + "\",\"privileges\":[]}";
+//    	return roleData;
+//    }
+    
+//    private final String createNewResource() throws IOException {
+//    	final InputStream stream = getClass().getResourceAsStream("/data/role_json_01.json");
+//    	final String roleData = CharStreams.toString(new InputStreamReader(stream));
+//		return roleData;
+//    }
+    
+    private final String createNewResource() throws JsonProcessingException, IOException {
+    	final InputStream stream = getClass().getResourceAsStream("/data/role_json_01.json");
+    	final JsonNode rootNode = new ObjectMapper().readTree(stream);
+    	((ObjectNode) rootNode).set("name", JsonNodeFactory.instance.textNode(randomAlphabetic(8)));
+    	return rootNode.toString();
     }
-	
+    
 	protected RoleSimpleApiClient getApi() {
 		return api;
 	}

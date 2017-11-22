@@ -168,14 +168,14 @@ public abstract class GenericSimpleApiClient<T extends IDto> {
 
     // 创建
 
-    public final T create(final T resource) {
+    public final T create(final String resource) {
 
         final String uriForResourceCreation = createAsUri(resource);
         final String resourceAsMime = findOneByUriAsString(uriForResourceCreation);
         return marshaller.decode(resourceAsMime, clazz);
     }
 
-    public final String createAsUri(final T resource) {
+    public final String createAsUri(final String resource) {
         final Response response = createAsResponse(resource);
         Preconditions.checkState(response.getStatusCode() == 201, "create operation: " + response.getStatusCode());
 
@@ -184,7 +184,7 @@ public abstract class GenericSimpleApiClient<T extends IDto> {
         return locationOfCreatedResource;
     }
 
-    public final Response createAsResponse(final T resource) {
+    public final Response createAsResponse(final String resource) {
         Preconditions.checkNotNull(resource);
         final RequestSpecification givenAuthenticated = givenAuthenticated();
 

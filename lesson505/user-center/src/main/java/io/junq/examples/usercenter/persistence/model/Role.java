@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -33,19 +34,24 @@ public class Role implements INameableEntity, INameableDto {
     @JoinTable(joinColumns = { @JoinColumn(name = "ROLE_ID", referencedColumnName = "ROLE_ID") }, inverseJoinColumns = { @JoinColumn(name = "PRIV_ID", referencedColumnName = "PRIV_ID") })
     private Set<Privilege> privileges;
     // @formatter:on
+    
+    @NotNull
+    private String description;
 
     public Role() {
         super();
     }
 
-    public Role(final String nameToSet) {
+    public Role(final String nameToSet, final String descriptionToSet) {
         super();
         name = nameToSet;
+        description = descriptionToSet;
     }
 
-    public Role(final String nameToSet, final Set<Privilege> privilegesToSet) {
+    public Role(final String nameToSet, final String descriptionToSet, final Set<Privilege> privilegesToSet) {
         super();
         name = nameToSet;
+        description = descriptionToSet;
         privileges = privilegesToSet;
     }
 
@@ -70,7 +76,15 @@ public class Role implements INameableEntity, INameableDto {
         name = nameToSet;
     }
 
-    public Set<Privilege> getPrivileges() {
+    public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Set<Privilege> getPrivileges() {
         return privileges;
     }
 
