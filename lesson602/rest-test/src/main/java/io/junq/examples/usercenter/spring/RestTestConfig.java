@@ -8,7 +8,7 @@ import io.junq.examples.client.spring.RestClientConfig;
 import io.junq.examples.common.spring.CommonWebConfig;
 
 @Configuration
-@ComponentScan({ "io.junq.examples.test.common" })
+@ComponentScan({ "io.junq.examples.test.common", "io.junq.examples.test.common.client.security" })
 @Import({ RestClientConfig.class, CommonWebConfig.class })
 public class RestTestConfig {
 	

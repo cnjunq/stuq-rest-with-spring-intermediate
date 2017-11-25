@@ -17,6 +17,9 @@ public class UserCenterPaths {
 	
 	@Value("${http.sec.path}")
     private String secPath;
+	
+    @Value("${http.oauthPath}")
+    private String oauthPath;
 
     @Autowired
     private CommonPaths commonPaths;
@@ -54,4 +57,7 @@ public class UserCenterPaths {
         return getContext() + "/j_spring_security_check";
     }
 
+    public final String getOauthPath() {
+        return oauthPath;
+    }
 }
