@@ -29,8 +29,6 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
         super();
     }
 
-    // global security concerns
-
     @Bean
     public AuthenticationProvider authProvider() {
         final DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -42,9 +40,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     public void configureGlobal(final AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(authProvider());
     }
-
-    // http security concerns
-
+    
     @Override
     public void configure(final HttpSecurity http) throws Exception {
         http.
