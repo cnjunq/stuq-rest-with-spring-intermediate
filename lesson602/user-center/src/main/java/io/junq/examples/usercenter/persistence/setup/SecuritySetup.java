@@ -115,7 +115,7 @@ public class SecuritySetup implements ApplicationListener<ContextRefreshedEvent>
     final void createRoleIfNotExisting(final String name, final Set<Privilege> privileges) {
         final Role entityByName = roleService.findByName(name);
         if (entityByName == null) {
-            final Role entity = new Role(name, randomAlphabetic(8));
+            final Role entity = new Role(name);
             entity.setPrivileges(privileges);
             roleService.create(entity);
         }

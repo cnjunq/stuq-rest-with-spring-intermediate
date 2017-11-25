@@ -34,24 +34,19 @@ public class Role implements INameableEntity, INameableDto {
     @JoinTable(joinColumns = { @JoinColumn(name = "ROLE_ID", referencedColumnName = "ROLE_ID") }, inverseJoinColumns = { @JoinColumn(name = "PRIV_ID", referencedColumnName = "PRIV_ID") })
     private Set<Privilege> privileges;
     // @formatter:on
-    
-    @NotNull
-    private String description;
 
     public Role() {
         super();
     }
 
-    public Role(final String nameToSet, final String descriptionToSet) {
+    public Role(final String nameToSet) {
         super();
         name = nameToSet;
-        description = descriptionToSet;
     }
 
-    public Role(final String nameToSet, final String descriptionToSet, final Set<Privilege> privilegesToSet) {
+    public Role(final String nameToSet, final Set<Privilege> privilegesToSet) {
         super();
         name = nameToSet;
-        description = descriptionToSet;
         privileges = privilegesToSet;
     }
 
@@ -75,14 +70,6 @@ public class Role implements INameableEntity, INameableDto {
     public void setName(final String nameToSet) {
         name = nameToSet;
     }
-
-    public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
 
 	public Set<Privilege> getPrivileges() {
         return privileges;

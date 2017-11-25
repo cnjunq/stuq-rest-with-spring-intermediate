@@ -18,6 +18,7 @@ import io.junq.examples.common.interfaces.IDto;
 import io.junq.examples.common.spring.util.Profiles;
 import io.junq.examples.common.util.QueryConstants;
 import io.junq.examples.common.web.WebConstants;
+import io.junq.examples.test.common.client.security.ITestAuthenticator;
 import io.junq.examples.usercenter.client.UserCenterPaths;
 import io.junq.examples.usercenter.util.UserCenter;
 import io.restassured.RestAssured;
@@ -35,6 +36,9 @@ public abstract class GenericSimpleApiClient<T extends IDto> {
     
     @Autowired
     private IMarshaller marshaller;
+    
+    @Autowired
+    private ITestAuthenticator auth;
     
     private final Class<T> clazz;
     
@@ -167,12 +171,28 @@ public abstract class GenericSimpleApiClient<T extends IDto> {
     }
 
     // 创建
+    
+    public final T create(final T resource) {
+
+        final String uriForResourceCreation = createAsUri(resource);
+        final String resourceAsMime = findOneByUriAsString(uriForResourceCreation);
+        return marshaller.decode(resourceAsMime, clazz);
+    }
 
     public final T create(final String resource) {
 
         final String uriForResourceCreation = createAsUri(resource);
         final String resourceAsMime = findOneByUriAsString(uriForResourceCreation);
         return marshaller.decode(resourceAsMime, clazz);
+    }
+    
+    public final String createAsUri(final T resource) {
+        final Response response = createAsResponse(resource);
+        Preconditions.checkState(response.getStatusCode() == 201, "create operation: " + response.getStatusCode());
+
+        final String locationOfCreatedResource = response.getHeader(HttpHeaders.LOCATION);
+        Preconditions.checkNotNull(locationOfCreatedResource);
+        return locationOfCreatedResource;
     }
 
     public final String createAsUri(final String resource) {
@@ -182,6 +202,13 @@ public abstract class GenericSimpleApiClient<T extends IDto> {
         final String locationOfCreatedResource = response.getHeader(HttpHeaders.LOCATION);
         Preconditions.checkNotNull(locationOfCreatedResource);
         return locationOfCreatedResource;
+    }
+    
+    public final Response createAsResponse(final T resource) {
+        Preconditions.checkNotNull(resource);
+        final RequestSpecification givenAuthenticated = givenAuthenticated();
+
+        return givenAuthenticated.contentType(JSON).body(resource).post(getUri());
     }
 
     public final Response createAsResponse(final String resource) {
@@ -221,11 +248,12 @@ public abstract class GenericSimpleApiClient<T extends IDto> {
 
     public final RequestSpecification givenAuthenticated() {
         final Pair<String, String> credentials = getDefaultCredentials();
-        return RestAssured.given()
-        			.auth().preemptive()
-        			.basic(credentials.getLeft(), credentials.getRight())
+//        return RestAssured.given()
+//        			.auth().preemptive()
+//        			.basic(credentials.getLeft(), credentials.getRight())
 //        			.log().all()
-        			;
+//        			;
+        return auth.givenAuthenticated(credentials.getLeft(), credentials.getRight());
     }
     
     public final Response read(final String uriOfResource) {
