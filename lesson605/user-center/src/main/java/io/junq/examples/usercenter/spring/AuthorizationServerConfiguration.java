@@ -82,7 +82,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         .withClient("uc-implicit")
         .authorizedGrantTypes("implicit")
         .scopes("user-center", "read")
-        .autoApprove("user-center")
+        .autoApprove(true)
         ;
         // @formatter:on
     }

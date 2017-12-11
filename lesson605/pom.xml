@@ -11,7 +11,6 @@
 	<modules>
 		<module>rest-common</module>
 		<module>user-center</module>
-		<module>usercenter-ui-password</module>
 		<module>usercenter-ui-implicit</module>
 	</modules>
 

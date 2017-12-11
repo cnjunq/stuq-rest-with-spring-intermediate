@@ -15,6 +15,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
+import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.RemoteTokenServices;
 
 @Configuration
 @EnableResourceServer
@@ -49,13 +51,26 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
         auth.authenticationProvider(authProvider());
     }
 
+	@Override
+	public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
+        RemoteTokenServices tokenService = new RemoteTokenServices();
+        tokenService.setClientId("uc");
+        tokenService.setClientSecret("VXB0YWtlLUlyb24h");
+        tokenService.setCheckTokenEndpointUrl("http://localhost:8082/oauth/check_token");
 
+        resources.tokenServices(tokenService);
+	}
+    
     @Override
     public void configure(final HttpSecurity http) throws Exception {
         http
         	.authorizeRequests()
-        	.anyRequest()
-        	.permitAll()
+	        	.antMatchers("/oauth/authorize")
+	        	.authenticated()
+	        .and()
+	        .authorizeRequests()
+        		.anyRequest()
+        		.permitAll()
         	.and().
         sessionManagement()
         	.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
