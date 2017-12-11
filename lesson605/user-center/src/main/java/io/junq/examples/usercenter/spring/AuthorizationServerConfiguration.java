@@ -77,6 +77,12 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         .refreshTokenValiditySeconds(3600 * 24)
         .autoApprove("user-center")
         .accessTokenValiditySeconds(3600)
+        //
+        .and()
+        .withClient("uc-implicit")
+        .authorizedGrantTypes("implicit")
+        .scopes("user-center", "read")
+        .autoApprove("user-center")
         ;
         // @formatter:on
     }

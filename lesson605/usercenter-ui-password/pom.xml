@@ -11,20 +11,20 @@
 	</parent>
 
 	<groupId>io.junq.examples</groupId>
-	<artifactId>usercenter-ui</artifactId>
+	<artifactId>usercenter-ui-password</artifactId>
 	<packaging>jar</packaging>
 	<version>1.0.0-SNAPSHOT</version>
-	<name>usercenter-ui</name>
+	<name>usercenter-ui-password</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>1.8</java.version> 
+		<java.version>1.8</java.version>
 		<wro4j.version>1.8.0</wro4j.version>
 		<angularjs.version>1.4.9</angularjs.version>
 		<jquery.version>2.1.1</jquery.version>
 		<bootstrap.version>3.2.0</bootstrap.version>
-		<jasmine.version>2.0.0</jasmine.version> 
+		<jasmine.version>2.0.0</jasmine.version>
 	</properties>
 
 	<dependencies>
@@ -51,7 +51,7 @@
 				<directory>${project.build.directory}/generated-resources</directory>
 			</resource>
 		</resources>
-		
+
 		<plugins>
 
 			<plugin>
@@ -63,7 +63,7 @@
 				<artifactId>maven-resources-plugin</artifactId>
 				<executions>
 					<execution>
-						<!-- Serves *only* to filter the wro.xml so it can get an absolute 
+						<!-- Serves *only* to filter the wro.xml so it can get an absolute
 							path for the project -->
 						<id>copy-resources</id>
 						<phase>validate</phase>
